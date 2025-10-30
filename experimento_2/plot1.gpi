@@ -1,0 +1,4 @@
+set view equal xyz
+set grid
+set size square
+plot "dados.dat" using 2:1 pt 6 ps 2

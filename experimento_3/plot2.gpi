@@ -1,0 +1,17 @@
+# set view equal xyz
+# set key box width 1.5 height 1.0
+# chi2 = (FIT_STDFIT**2)
+# set label sprintf("{/Symbol c}^2 = %.5f", chi2) @chi2
+set grid
+# set size square
+
+f(x) = a*x + b
+fit f(x) "dados.dat" using 3:($1 ** 2):2 yerrors via a,b
+plot f(x), "dados.dat" using 3:($1 **2) pt 6 ps 2
+
+# Como a coluna T está multiplicada por 10, isso tem como efeito multiplicar
+# o fator (4pi²/k)*m por 100. De maneira semelhante, como os valores de m foram
+# providos em gramas, seu fator deve ser dividido por 1000. Assim é possível
+# expressar k com unidades do SI, resultando em:
+k = (4 * pi ** 2)/(10 * a)
+print k

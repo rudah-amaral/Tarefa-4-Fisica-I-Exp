@@ -1,0 +1,17 @@
+# set view equal xyz
+set grid
+# set size square
+
+f(x) = a*x + b
+fit f(x) "dados.dat" using 3:(log($1)):(log($2) + 0.0001) yerrors via a,b
+plot f(x), "dados.dat" using 3:(log($1)):(log($2)) with errorbars pt 6 ps 2
+
+tau = -1 / a
+v0 = exp(b)
+print("tau is = ")
+print(tau)
+print("v0 is = ")
+print(v0)
+
+# plot "dados.dat" using 3:(log($1)):2 with errorbars pt 6 ps 2
+

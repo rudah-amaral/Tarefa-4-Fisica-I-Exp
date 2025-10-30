@@ -1,0 +1,594 @@
+\documentclass{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[backend = biber]{biblatex}
+\usepackage{amsmath, amsfonts, amssymb, mathptmx}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{icomma}
+\usepackage{indentfirst}
+\usepackage{pgf}
+\usepackage{rotating, makecell}
+\usepackage{siunitx}
+\usepackage{tabularray}
+
+\addbibresource{meu.bib}
+
+\title{
+    Universidade do Rio de Janeiro\\
+    Bacharelado em Engenharia de Computação\\
+    Física I - Experimental\\
+    Tarefa 4
+}
+\author{
+    Rudah Amaral\\
+    Matrícula: 202510069611
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\clearpage
+
+\tableofcontents
+\clearpage
+
+\section*{Objetivos dos Experimentos}
+
+Nesse relatório será estudados quatro experimentos, cada um com suas medidas
+diretas e associadas incertezas, e será avaliado os coeficientes das curvas de
+regressão baseada no método dos mínimos quadrados com suas subsequente plotagem
+junto aos dados experimentais.
+
+Adicionalmente, a curva também terá sua qualidade aferida de acordo com duas
+métricas: o parâmetro $r^2$ e o parâmetro $\chi^2$, e também será avaliada a
+acurácia dos resultados de acordo com os valores teóricos disponíveis.
+
+\section{Introdução e Desenvolvimento Teórico}
+
+O método dos mínimos quadrados se baseia no fato de que ao se ter um conjunto de
+dados experimentais, é de interesse podermos traçar uma curva que melhor se
+alinha a eles, a fim de extrapolar a tendência do comportamento observado.
+
+Ao analisarmos a Figura \ref{fig:exemplo}, podemos questionar qual curva é a
+melhor para essa tarefa.
+
+\clearpage
+
+
+Resulta-se que ao plotar essa curva, é vital que o físico ao analisar esses
+dados experimentais escolha a curva de uma função que melhor modele o
+comportamento observado \cite{bjorck1990least}. No caso da Figura tal, é
+evidente que um polinômio de grau $1$, presente na equação \eqref{eq:polinomio},
+é o mais apropriado.
+
+\begin{equation} \label{eq:polinomio}
+    y = a_0 + a_1 x
+\end{equation}
+
+Portanto, para esse caso, descobrir a melhor curva que se alinhe a esses dados é
+equivalente a descobrir os valores ideais para $a_0$ e $a_1$.
+
+Para tal, primeiro é importante apontar que é possível identificar a soma dos
+erros quadrados, denotado $SSe$, das possíveis curvas com os dados experimentais
+através da equação \eqref{eq:sse}, onde $\hat y$ é o valor de y previsto pela
+curva de regressão.
+
+\begin{equation} \label{eq:sse}
+    SSe = \sum_{i=1}^N (\hat y - y)^2 = \sum_{i=1}^N (a_0 + a_1x - y)^2
+\end{equation}
+
+A soma dos erros quadrados mensura o quão distantes estão os dados experimentais
+das previsões da curva de regressão, portanto podemos concluir que a melhor
+curva será aquela que venha a minimizar $SSe$ em relação a $a_0$ e a $a_1$. Em
+outras palavras, as derivadas parciais de $SSe$ em relação a $a_0$ e $a_1$ devem
+ser nulas, como é apresentado nas equações \eqref{eq:sse_partial_x} e
+\eqref{eq:sse_partial_y}.
+
+\begin{align}
+    \label{eq:sse_partial_x}
+    \frac{\partial SSe}{\partial a_0} &= \sum_{i=1}^N 2(a_0 + a_1x - y) = 0 \\
+    \label{eq:sse_partial_y}
+    \frac{\partial SSe}{\partial a_1} &= \sum_{i=1}^N 2x(a_0 + a_1x - y) = 0
+\end{align} 
+
+Tais equações fazem parte de um sistema, e portanto agora é possível resolvê-las
+por $a_0$ e $a_1$, o que nos leva aos resultados dispostos nas equações
+\eqref{eq:regression_a0} e \eqref{eq:regression_a1}.
+
+\begin{align}
+    \label{eq:regression_a0}
+    a_0 &= \frac{\left(\sum_{i = 1}^N{x_i^2}\right)\left(\sum_{i =
+    1}^N{y_i}\right) - \left(\sum_{i = 1}^N{x_i}\right)\left(\sum_{i = 1}^N{x_i
+    y_i}\right)}{N\left(\sum_{i = 1}^N{x_i^2}\right) - \left(\sum_{i =
+    1}^N{x_i}\right)^2} \\[1.5ex]
+    \label{eq:regression_a1}
+    a_1 &= \frac{N\left(\sum_{i = 1}^N{x_i y_i}\right) - \left(\sum_{i =
+    1}^N{x_i}\right)\left(\sum_{i = 1}^N{y_i}\right)}{N\left(\sum_{i =
+    1}^N{x_i^2}\right) - \left(\sum_{i = 1}^N{x_i}\right)^2}
+\end{align}
+
+Para aferir a qualidade desses ajustes é comum se usar de duas métricas,
+denominadas $r^2$ e $\chi^2$.
+
+A equação \eqref{eq:r2} define $r^2$ como a razão da soma dos quadrados de
+regressão, $SSr$, pela soma dos quadrados totais, $SSt$.
+
+\begin{equation}
+    \label{eq:r2}
+    r^2 = \frac{SSr}{SSt}
+\end{equation}
+
+Por sua vez, ambos são definidos nas equações \eqref{eq:ssr} e \eqref{eq:sst},
+em que $\bar{y}$ é a média dos valores experimentais de $y$.
+
+\begin{align}
+    \label{eq:ssr}
+    SSr &= \sum_{i=1}^n \left(\hat y - \bar{y}\right)^2 = \sum_{i=1}^n \left(a_0 + a_1
+    x_i - \bar{y}\right)^2 \\[1.5ex]
+    \label{eq:sst}
+    SSt &= \sum_{i = 1}^n \left(y_i - \bar{y}\right)^2
+\end{align}
+
+Como $SSt = SSr + SSe$, a minimização de $SSe$, necessária para um bom ajuste,
+implica na aproximação de $SSt$ com $SSr$, e portanto mais próxima é a razão de
+ambos, $r^2$, de $1$. De maneira equivalente, quanto mais próximo é o parâmetro
+$r^2$ de um ajuste linear de $1$, melhor é esse ajuste.
+
+Por sua vez $\chi^2$ é definido pela equação \eqref{eq:chi2}, em que $\delta y$
+é a incerteza da medição experimental de $y$. Valores de $\chi^2$ próximos de
+$0$ indicam que os numeradores das frações presentes nesse somatório, a saber os
+erros entre os valores de $y$ previstos pelo ajuste e os valores experimentais,
+é nulo, categorizando um modelo melhor mas possivelmente super-ajustado.
+
+\begin{equation}
+    \label{eq:chi2}
+    \sum_{i=1}^n \left(\frac{a_0 + a_1x_i - y_i}{\delta y_i}\right)^2
+\end{equation}
+
+Valores de $\chi^2$ próximos de $1$ indicam que esses erros são próximos dos
+desvios de $y$ correspondentes, representando uma alta probabilidade dos valores
+obtidos experimentalmente poderem ser gerados pela curva de regressão. Em outras
+palavras, valores de $y$ obtidos pela extrapolação da curva de regressão tem uma
+boa chance de refletir os fenômenos reais sob estudo.
+
+Por fim, é evidente que não é possível calcular essa métrica caso não esteja
+presente nos dados sob analise os desvios experimentais das medições de $y$.
+
+\clearpage
+
+\section{Materiais Utilizados e Roteiro Experimental}
+
+Para a realização dessa análise foi utilizado a plataforma \textit{Google
+Colab}, ilustrada na Figura \ref{fig:google-colab}, que disponibiliza um
+ambiente de programação \textit{Python} facilitado, com capacidades de
+integração com documentos \textit{Markdown}.
+
+Dentre as bibliotecas \textit{Python} utilizadas estão \textit{Pandas} e
+\textit{Numpy} para processamento de números e \textit{matplotlib} e
+\textit{Seaborn} para plotagem de gráficos.
+
+Através dessa plataforma foram executados em sequência pequenos \textit{scripts}
+com objetivo de calcular os coeficientes das curvas de regressão, e a métrica
+$r^2$.
+
+O programa de análise científica \textit{Gnuplot} também foi utilizado,
+principalmente para realizar ajustes os dos experimentos mais complexos 
+e para calcular as métricas de $\chi^2$.
+
+\section{Apresentação e Análise dos Dados Experimentais}
+
+\subsection{Movimento Uniforme}
+
+O experimento em questão se remete ao movimento uniforme de uma partícula, e de
+suas marcações de posição e tempo de acordo com a Tabela \ref{tab:Dados mu}.
+
+\begin{table}[ht]
+\centering
+\caption{Dados experimentais de posição e tempo.}
+\bigskip
+\label{tab:Dados mu}
+\begin{tblr}{
+    hlines,
+    vlines,
+    colspec = {
+        r
+        r
+        r
+        r
+    },
+    colsep  = 3pt,
+}
+$s(mm)$  & $\delta s$  & $t(s)$  & $\delta t$ \\
+2445     & 10          & 50      & 5          \\
+2756     & 10          & 100     & 5          \\
+4920     & 10          & 150     & 5          \\
+7217     & 10          & 200     & 5          \\
+8788     & 10          & 250     & 5          \\
+10649    & 10          & 300     & 5          \\
+11790    & 10          & 350     & 5          \\
+14799    & 10          & 400     & 5          \\
+16339    & 10          & 450     & 5          \\
+18393    & 10          & 500     & 5          \\
+\end{tblr}
+\end{table}
+
+Sabendo que a equação \eqref{eq:movimento_uniforme} modela esse fenômeno físico,
+e que esse fenômeno é de natureza linear, para achar a curva que melhor se
+ajusta a esses dados são necessários os valores de $s_0$ e $v$.
+
+\begin{equation}
+    \label{eq:movimento_uniforme}
+    s = s_0 + vt
+\end{equation}
+
+Veja, essa situação é idêntica a que foi demonstrada na equação
+\eqref{eq:polinomio}, apenas os nomes das variáveis e seu significado físico
+mudaram, mas o procedimento é idêntico. Portanto, ao minimizar a variação dos
+quadrados de erro em função de $s_0$ e $v$, encontraremos os valores ideais para
+esses coeficientes. Mais que isso, em termos físicos esses coeficientes
+representam as condições iniciais do fenômeno observado. Portanto, com a
+conversão dos valores de posição de milímetros para metros e através do
+método mencionado chegamos a esses valores:
+
+$$ s_0 = (-0,3100 \pm 0,3584) \, m$$
+$$ v = (0,037 \pm 0,001)\, m/s $$
+ 
+\subsection{Terceira lei de Kepler}
+
+O segundo experimento tinha como objetivo calcular a contante de Kepler $K$
+através de observações dos astros do sistema solar. Kepler teria descoberto que
+a razão do quadrado dos períodos de corpos orbitantes pelo cubo do raio médio de
+suas respectivas órbitas é constante. Dessa maneira, a equação \eqref{eq:kepler} mostra
+como podemos relacionar essas duas propriedades através de $k$.
+
+\begin{equation}
+    \label{eq:kepler}
+    T^2 = K R^3
+\end{equation}
+
+A tabela \ref{tab:Dados kepler} mostra os dados que foram utilizados para
+calcular essa contante, e a Figura \ref{fig:kepler 1} mostra sua plotagem.
+
+\begin{table}[!ht]
+\centering
+\caption{Dados experimentais de período e raio médio.}
+\bigskip
+\label{tab:Dados kepler}
+\begin{tblr}{
+    hlines,
+    vlines,
+    colspec = {
+        r
+        r
+    },
+    colsep  = 3pt,
+}
+T(anos) & R(u.a.) \\
+0.241   & 0.387   \\
+0.615   & 0.723   \\
+1.000   & 1.000   \\
+1.888   & 1.524   \\
+11.860  & 5.204   \\
+29.600  & 9.580   \\
+83.700  & 19.140  \\
+165.400 & 30.200  \\
+248.000 & 39.400  \\
+\end{tblr}
+\end{table}
+
+Para realizar o ajuste desses dados se faz valer a relação previamente 
+estabelecida na equação \eqref{eq:kepler}, escalando o eixo das abscissas para
+$R³$ e o eixo das ordenadas para $T^2$. Ao fazer isso se torna evidente a
+relação linear que existe entre $R^3$ e $T^2$, cujo coeficiente linear é
+justamente $K$, com um valor previsto de $1,001 \pm 0,001$, chocantemente
+próximo do valor de referência.
+
+\subsection{Sistema massa-mola}
+
+Nesse experimento foi observado o período de $10$ oscilações de um sistema
+massa-mola conforme se reduzia a massa do peso preso a mola. Os dados desses
+experimento são apresentados na Tabela \ref{tab:Dados massa-mola}, e suas
+plotagens na Figura \ref{fig:massa-mola 1}.
+
+\begin{table}[!ht]
+\centering
+\caption{Dados experimentais de período e massa de um sistema massa-mola.}
+\bigskip
+\label{tab:Dados massa-mola}
+\begin{tblr}{
+    hlines,
+    vlines,
+    colspec = {
+        r
+        r
+        r
+        r
+    },
+    colsep  = 3pt,
+}
+$10T \, (s)$ & $\delta(10T)$ & $m \, (g)$ & $\delta(m)$ \\
+4.5          & 0.5           & 50         & 1           \\
+5.5          & 0.5           & 70         & 1           \\
+6            & 0.5           & 90         & 1           \\
+7            & 1             & 120        & 1           \\
+8            & 1             & 150        & 1           \\
+9            & 1             & 200        & 1           \\
+10           & 1             & 250        & 1           \\
+11           & 1             & 300        & 1           \\
+12           & 1             & 350        & 1           \\
+13           & 1             & 400        & 1           \\
+14           & 1             & 500        & 1           \\
+\end{tblr}
+\end{table}
+
+Como o peso e a massa de um sistema massa-mola podem ser relacionados de acordo
+com a equação \eqref{eq:relacao massa-mola}, é possível descobrir uma reta de
+ajuste ao escalar o eixo das ordenadas por $T^2$, achando novamente o valor de
+uma constante $k$, conforme demonstrado na Figura \ref{fig:massa-mola 1}.
+
+\begin{equation}
+    \label{eq:relacao massa-mola}
+    T^2 = \frac{4\pi^2}{k}m
+\end{equation}
+
+O leitor atento perceberá que o valor do coeficiente angular da reta $a_0$ não é
+ainda o suficiente para avaliar valor da contante $k$, afinal os dados
+utilizados fornecem o tempo de $10$ períodos, e não de apenas um conforme
+previsto na equação \eqref{eq:relacao massa-mola}, resultando no lado direito da
+equação sendo escalada por $10^2$. Além disso, os dados utilizados utilizam
+gramas como unidade de medida da massa, portanto sua conversão para o S.I. nos
+obriga a dividir o lado direito da equação por $1000$. Ambos efeitos combinados
+nos revelam o verdadeiro valor de $k$ através da equação \eqref{eq:k massa-mola}.
+
+\begin{equation}
+    \label{eq:k massa-mola}
+    a_0 = \frac{4\pi^2}{k} \therefore k = \frac{4\pi^2}{a_0} = 9.808 \pm 0,006 \, N/m
+\end{equation}
+
+\subsection{Descarga de capacitor em um circuito RC}
+
+No último experimento foi medida a diferença de potencial de um circuito eletrônico
+resistor-carga conforme a passagem do tempo. Os dados desses experimento são
+apresentados na Tabela \ref{tab:Dados rc}, e suas plotagens na Figura
+\ref{fig:rc 1}.
+
+\begin{table}[!ht]
+\centering
+\caption{Dados experimentais de período e ddp de um circuito resistor-carga.}
+\label{tab:Dados rc}
+\footnotesize
+\bigskip
+\begin{tblr}{
+    hlines,
+    vlines,
+    colspec = {
+        r
+        r
+        r
+        r
+    },
+    colsep  = 3pt,
+}
+$ddp(V)$ & $\delta(ddp)$ & $t(s)$ & $\delta(t)$ \\
+40       & 1             &   5    & 1           \\
+29       & 1             &  10    & 1           \\
+23       & 1             &  15    & 1           \\
+18.9     & 0.1           &  20    & 1           \\
+13.8     & 0.1           &  25    & 1           \\
+10.7     & 0.1           &  30    & 1           \\
+ 9.2     & 0.1           &  35    & 1           \\
+ 6.3     & 0.1           &  40    & 1           \\
+ 4.8     & 0.1           &  45    & 1           \\
+ 4.4     & 0.1           &  50    & 1           \\
+ 3.5     & 0.1           &  55    & 1           \\
+ 2.5     & 0.1           &  60    & 1           \\
+ 2.2     & 0.1           &  65    & 1           \\
+ 1.5     & 0.1           &  70    & 1           \\
+ 1.5     & 0.1           &  75    & 1           \\
+ 0.92    & 0.01          &  80    & 1           \\
+ 0.71    & 0.01          &  85    & 1           \\
+ 0.46    & 0.01          &  90    & 1           \\
+ 0.53    & 0.01          &  95    & 1           \\
+ 0.24    & 0.01          & 100    & 1           \\
+ 0.36    & 0.01          & 105    & 1           \\
+ 0.10    & 0.01          & 110    & 1           \\
+ 0.06    & 0.01          & 115    & 1           \\
+ 0.17    & 0.01          & 120    & 1           \\
+ 0.05    & 0.01          & 125    & 1           \\
+ 0.125   & 0.001         & 130    & 1           \\
+ 0.109   & 0.001         & 135    & 1           \\
+ 0.096   & 0.001         & 140    & 1           \\
+ 0.028   & 0.001         & 155    & 1           \\
+ 0.017   & 0.001         & 160    & 1           \\
+ 0.003   & 0.001         & 165    & 1           \\
+ 0.001   & 0.001         & 180    & 1           \\
+\end{tblr}
+\end{table}
+
+Ainda não é possível realizar o ajuste, mas já podemos ver que a ddp do circuito
+cai com uma tendência de decaimento exponencial conforme o passar do tempo. De fato,
+a equação \eqref{eq:rc} apresenta a relação entre ambas grandezas e confirma nossas
+suspeitas.
+
+\begin{equation}
+    \label{eq:rc}
+    ddp = V_0 \cdot e^{-t/\tau}
+\end{equation}
+
+Podemos então realizar uma série de transformações nessa equação que tornem
+possível apresentar uma relação linear, a começar tirando o logaritmo dos dois
+lados.
+
+\begin{align} \label{eq:rc-log}
+\begin{split}
+    log(ddp) &= log(V_0 \cdot e^{-t/\tau}) \\
+             &= log(V_0) + log(e^{-t/\tau}) \\
+             &= log(V_0) - \frac{log(e)}{\tau} t \\
+\end{split}
+\end{align}
+
+Com isso, a equaçõe \eqref{eq:rc-log} nos apresentam uma relação linear entre
+o logaritmo da ddp e o tempo passado decorrido após o início da descarga. Uma
+relação linear em que o coeficiente linear $b = log(V_0)$ e o coeficiente
+angular $a = -log(e)/\tau$. Portanto, é de se esperar que após realizar a
+regressão linear, apresentada na Figura \ref{fig:rc 2}, conseguiremos estimar os
+valores de $V_0$ e $\tau$.
+
+Por mais que essa forma funcione, não é a mais elegante. Se a fórmula expressa
+na equação \eqref{eq:rc} utiliza uma exponencial na base $e$, o mais intuitivo
+seria tirar o logaritmo \emph{natural} de ambos os lados, como é apresentado na
+equação \eqref{eq:rc-ln}.
+
+\begin{align} \label{eq:rc-ln}
+\begin{split}
+    ln(ddp) &= ln(V_0 \cdot e^{-t/\tau}) \\
+            &= ln(V_0) + ln(e^{-t/\tau}) \\
+            &= ln(V_0) -\frac{t}{\tau} ln(e) \\
+            &= ln(V_0) -\frac{1}{\tau} t \\
+\end{split}
+\end{align}
+
+Dessa maneiram, o coeficiente linear $b = ln(V_0)$ e o coeficiente angular $a =
+-1/\tau$. A regressão apresentada na figura \ref{fig:rc 3} resultante da equação
+\eqref{eq:rc-ln} de relação de ddp por tempo nos dá os valores desses
+coeficientes de modo que com eles possamos calcular $V_0$ e $\tau$ conforme a
+equação \eqref{eq:rc-ln-coeficientes}.
+
+\begin{align} \label{eq:rc-ln-coeficientes}
+    a &= -\frac{1}{\tau} && \therefore &&\tau = \frac{1}{a} &&= 18,000 \pm 0,009
+    \, s \\
+    b &= ln(V_0) && \therefore &&V_0 = e^b = e^{3,95} &&= 51,9 \pm 0,01
+    \, V
+\end{align}
+
+\section{Resultados e Conclusões}
+
+Por fim, ao longo dessas avaliações foi trago à tona a utilidade dos modelos de
+regressão para a extrapolação dos comportamentos físicos frente as observações
+feitas nos experimentos. Em questão da qualidade desses ajustes, em quase todos
+os casos o parâmetro de $r^2$ foram satisfatórios, mas não os de $\chi^2$, o que
+pode indicar algum erro no procedimento de seu cálculo.
+
+No segundo experimento fomos capazes de deduzir o valor da contante de Kepler como
+aproximadamente $k = 1,001 \, ano^2/u.a.^3$, muito próxima do valor teórico de $1
+ano^2/u.a.^3$. A equação \eqref{eq:kepler acuracia} mostra sua acurácia.
+
+\begin{equation} \label{eq:kepler acuracia}
+    acuracia_k = \left(1 - \left|\frac{k_{teorico} -
+    k_{experimental}}{k_{teorico}}\right|\right) \cdot 100 \approx 99,9\%
+\end{equation}
+
+Já no experimento do sistema massa-mola chegamos ao valor da constante $k =
+9.808 \pm 0,006 \, N/m$, também próxima do valor teórico de $10N/m$. A
+\eqref{eq:massa mola acuracia} mostra sua acurácia.
+
+\begin{equation} \label{eq:massa mola acuracia}
+    acuracia_k = \left(1 - \left|\frac{k_{teorico} -
+    k_{experimental}}{k_{teorico}}\right|\right) \cdot 100 \approx 98,08\%
+\end{equation}
+
+E finalmente, no experimento do circuito RC, fomos capazes de prever os valores
+de $\tau = 18$ e $V_0 = 51,9$ dada as observações da ddp com o passar do tempo.
+Considerando que os valores reais de ambos eram respectivamente $20s$ e $50V$,
+as previsões foram de boa qualidade. as equações
+\eqref{eq:circuito_acuracia_tau} e \eqref{eq:circuito_acuracia_v0} mostram as
+acurácias de ambas previsões.
+
+\begin{align}
+    \label{eq:circuito_acuracia_tau} acuracia_\tau = \left(1 -
+    \left|\frac{\tau_{real} - \tau_{experimental}}{\tau_{real}}\right|\right)
+    \cdot 100 \approx \% 90\% \\[1ex]
+    \label{eq:circuito_acuracia_v0}
+    acuracia_{V_0} = \left(1 - \left|\frac{V_{0 \,teorico} - V_{0\,real}}{V_{0
+    \,teorico}}\right|\right) \cdot 100 \approx \% 96,2
+\end{align}
+
+\section{Figuras}
+
+\begin{figure}[ht]
+    \caption{Dois possíveis ajustes de um conjunto de dados hipotético.}
+    \label{fig:exemplo}
+    \begin{center}
+    \input{imagens/exemplo.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Captura de tela do ambiente do \textit{Google Colab}.}
+    \label{fig:google-colab}
+    \begin{center}
+    \includegraphics[width=\linewidth]{imagens/Google Colab.png}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Regressão linear do experimento de movimento uniforme.}
+    \label{fig:ajuste linear}
+    \begin{center}
+    \input{imagens/experimento 1.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Plotagem dos dados experimentais do experimento de kepler.}
+    \label{fig:kepler 1}
+    \begin{center}
+    \input{imagens/exercicio 2.1.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Regressão Linear do experimento de kepler.}
+    \label{fig:kepler 2}
+    \begin{center}
+    \input{imagens/exercicio 2.2.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Plotagem dos dados experimentais do sistema massa-mola.}
+    \label{fig:massa-mola 1}
+    \begin{center}
+    \input{imagens/exercicio 3.1.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Regressão Linear do sistema massa-mola.}
+    \label{fig:massa-mola 1}
+    \begin{center}
+    \input{imagens/exercicio 3.2.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Plotagem dos dados experimentais do circuito rc.}
+    \label{fig:rc 1}
+    \begin{center}
+    \input{imagens/exercicio 4.1.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Regressão Linear do circuito rc com log.}
+    \label{fig:rc 2}
+    \begin{center}
+    \input{imagens/exercicio 4.2.pgf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \caption{Regressão Linear do circuito rc com ln.}
+    \label{fig:rc 3}
+    \begin{center}
+    \input{imagens/exercicio 4.3.pgf}
+    \end{center}
+\end{figure}
+
+\clearpage
+\addcontentsline{toc}{section}{6. Referências}
+\printbibliography
+
+\end{document}

@@ -1,0 +1,8 @@
+# set view equal xyz
+set grid
+# set size square
+
+f(x) = a*x + b
+fit f(x) "dados.dat" using 3:(log10($1)):(log10($2) + 0.0001) yerrors via a,b
+plot f(x), "dados.dat" using 3:(log10($1)):(log10($2)) with errorbars pt 6 ps 2
+
