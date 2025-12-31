@@ -11,6 +11,7 @@
 \usepackage{rotating, makecell}
 \usepackage{siunitx}
 \usepackage{tabularray}
+\usepackage{float}
 
 \addbibresource{meu.bib}
 
@@ -184,7 +185,7 @@ e para calcular as métricas de $\chi^2$.
 O experimento em questão se remete ao movimento uniforme de uma partícula, e de
 suas marcações de posição e tempo de acordo com a Tabela \ref{tab:Dados mu}.
 
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \caption{Dados experimentais de posição e tempo.}
 \bigskip
@@ -251,7 +252,7 @@ como podemos relacionar essas duas propriedades através de $k$.
 A tabela \ref{tab:Dados kepler} mostra os dados que foram utilizados para
 calcular essa contante, e a Figura \ref{fig:kepler 1} mostra sua plotagem.
 
-\begin{table}[!ht]
+\begin{table}[H]
 \centering
 \caption{Dados experimentais de período e raio médio.}
 \bigskip
@@ -292,7 +293,7 @@ massa-mola conforme se reduzia a massa do peso preso a mola. Os dados desses
 experimento são apresentados na Tabela \ref{tab:Dados massa-mola}, e suas
 plotagens na Figura \ref{fig:massa-mola 1}.
 
-\begin{table}[!ht]
+\begin{table}[H]
 \centering
 \caption{Dados experimentais de período e massa de um sistema massa-mola.}
 \bigskip
@@ -354,7 +355,7 @@ resistor-carga conforme a passagem do tempo. Os dados desses experimento são
 apresentados na Tabela \ref{tab:Dados rc}, e suas plotagens na Figura
 \ref{fig:rc 1}.
 
-\begin{table}[!ht]
+\begin{table}[H]
 \centering
 \caption{Dados experimentais de período e ddp de um circuito resistor-carga.}
 \label{tab:Dados rc}
@@ -507,7 +508,7 @@ acurácias de ambas previsões.
 
 \section{Figuras}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Dois possíveis ajustes de um conjunto de dados hipotético.}
     \label{fig:exemplo}
     \begin{center}
@@ -515,7 +516,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Captura de tela do ambiente do \textit{Google Colab}.}
     \label{fig:google-colab}
     \begin{center}
@@ -523,7 +524,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Regressão linear do experimento de movimento uniforme.}
     \label{fig:ajuste linear}
     \begin{center}
@@ -531,7 +532,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Plotagem dos dados experimentais do experimento de kepler.}
     \label{fig:kepler 1}
     \begin{center}
@@ -539,7 +540,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Regressão Linear do experimento de kepler.}
     \label{fig:kepler 2}
     \begin{center}
@@ -547,7 +548,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Plotagem dos dados experimentais do sistema massa-mola.}
     \label{fig:massa-mola 1}
     \begin{center}
@@ -555,7 +556,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Regressão Linear do sistema massa-mola.}
     \label{fig:massa-mola 1}
     \begin{center}
@@ -563,7 +564,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Plotagem dos dados experimentais do circuito rc.}
     \label{fig:rc 1}
     \begin{center}
@@ -571,7 +572,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Regressão Linear do circuito rc com log.}
     \label{fig:rc 2}
     \begin{center}
@@ -579,7 +580,7 @@ acurácias de ambas previsões.
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \caption{Regressão Linear do circuito rc com ln.}
     \label{fig:rc 3}
     \begin{center}
